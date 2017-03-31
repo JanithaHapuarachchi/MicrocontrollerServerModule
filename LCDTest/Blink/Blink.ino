@@ -1,28 +1,29 @@
-char data = 0;            //Variable for storing received data
-void setup()
-{
-    Serial.begin(9600);   //Sets the baud for serial data transmission                               
-    pinMode(13, OUTPUT);  //Sets digital pin 13 as output pin
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(10, 11); // RX, TX
+
+void setup() {
+  // Open serial communications and wait for port to open:
+  pinMode(10,INPUT);
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
+
+  Serial.println("Goodnight moon!");
+
+  // set the data rate for the SoftwareSerial port
+  mySerial.begin(9600);
+  mySerial.println("Hello, world?");
 }
-boolean communicationstarted = false;
-void loop()
-{
-   if(Serial.available() > 0)      // Send data only when you receive data:
-   {
-    communicationstarted = true;
-    
-      data = Serial.read();        //Read the incoming data & store into data
-      Serial.print(data);          //Print Value inside data in Serial monitor
-      Serial.print("\n");        
-      if(data == '1')              // Checks whether value of data is equal to 1
-         digitalWrite(13, HIGH);   //If value is 1 then LED turns ON
-      else if(data == '0')         //  Checks whether value of data is equal to 0
-         digitalWrite(13, LOW);    //If value is 0 then LED turns OFF
-   }
-   else{
-    if(communicationstarted ==true){
-       //digitalWrite(13, LOW);
-      }
-    }
-  
+
+void loop() { // run over and over
+  if (mySerial.available()) {
+    Serial.write(mySerial.read());
+  }
+  if (Serial.available()) {
+    mySerial.write(Serial.read());
+  }
 }
