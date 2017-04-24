@@ -1,21 +1,24 @@
-#define PIR 4
-int val = 0;  
-void setup() {
-pinMode(PIR, INPUT);
-   Serial.begin(9600); 
-  // put your setup code here, to run once:
-
+/*PIR Motion Example*/
+int sensor=2;
+int led=13; 
+int pir;
+void setup()
+{
+  pinMode(led,OUTPUT);
+  pinMode(sensor,INPUT);
+  digitalWrite(led,LOW);//led off
 }
-
-void loop() {
-  val = digitalRead(PIR); 
-  if(val == HIGH){
-    Serial.println("Motion Found");
+void loop()
+{
+  pir= digitalRead(sensor);//Reads the Sensor
+  if (pir==1){
+     digitalWrite(led,HIGH);//led on
+    
     }
     else{
-       Serial.println("Motion Not Found");
-      }
-      delay(1000);
-  // put your main code here, to run repeatedly:
-
+      digitalWrite(led,LOW);//led on
+    }
+    
+    delay(1000);
+    pir = LOW;
 }
